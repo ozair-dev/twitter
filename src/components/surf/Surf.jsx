@@ -8,8 +8,9 @@ import Box from '@mui/material/Box';
 
 const Surf = () => {
   return (
-    <Box>
+    <Box sx={{ display: 'felx' }}>
       <Leftbar />
+      <Box sx={{ flex: 1 }}></Box>
     </Box>
   );
 };

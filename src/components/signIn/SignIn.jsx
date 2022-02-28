@@ -1,56 +1,43 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from 'react';
 
 import UserContext from '../../providers/UserContext';
 
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 const auth = getAuth();
 
+import AuthModal from '../authModal';
 
-import AuthModal from "../authModal";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import { useForm, Controller } from 'react-hook-form';
 
-import TwitterIcon from "@mui/icons-material/Twitter";
-
-import { useForm, Controller } from "react-hook-form";
-
-import { object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const loginSchema = object({
-  email: string()
-    .lowercase()
-    .email("Must be a valid email address")
-    .required("Email is required"),
-  password: string().required("Password is required"),
+  email: string().lowercase().email('Must be a valid email address').required('Email is required'),
+  password: string().required('Password is required')
 }).required();
 
-
-
 const SignIn = () => {
-
   const navigate = useNavigate();
   const [signInErrors, setSignInErrors] = useState({});
-  const {user, setUser} = useContext(UserContext)
-
 
   const {
     control,
     handleSubmit,
-    reset,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
-    },
+      email: '',
+      password: ''
+    }
   });
 
   return (
@@ -71,9 +58,7 @@ const SignIn = () => {
               id="email-basic"
               label="Email"
               margin="dense"
-              helperText={
-                errors.email?.message || signInErrors.email?.message
-              }
+              helperText={errors.email?.message || signInErrors.email?.message}
               error={!!errors.email || !!signInErrors.email}
             />
           )}
@@ -91,9 +76,7 @@ const SignIn = () => {
               id="password-basic"
               label="Password"
               margin="normal"
-              helperText={
-                signInErrors.password?.message || errors.password?.message
-              }
+              helperText={signInErrors.password?.message || errors.password?.message}
               error={!!errors.password || !!signInErrors.password}
               type="password"
               autoComplete="current-password"
@@ -110,7 +93,10 @@ const SignIn = () => {
         </Button>
 
         <Typography>
-          Dont have an account? <Button variant="text" onClick={()=>navigate("/signup")}>Sign up</Button>
+          Dont have an account?{' '}
+          <Button variant="text" onClick={() => navigate('/signup')}>
+            Sign up
+          </Button>
         </Typography>
       </Box>
     </AuthModal>
@@ -119,32 +105,31 @@ const SignIn = () => {
   function onSubmit({ email, password }) {
     setSignInErrors({});
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCred) => {
+      .then(() => {
         // success
       })
       .catch((err) => {
-        switch(err.code){
-          case "auth/wrong-password":
+        switch (err.code) {
+          case 'auth/wrong-password':
             setSignInErrors((prev) => ({
-            ...prev,
-            password: { message: "Password you entered is not correct" },
-          }));
+              ...prev,
+              password: { message: 'Password you entered is not correct' }
+            }));
             break;
 
-          case "auth/user-not-found":
+          case 'auth/user-not-found':
             setSignInErrors((prev) => ({
               ...prev,
               email: {
-                message: "No account is registered with this email address",
-              },
+                message: 'No account is registered with this email address'
+              }
             }));
             break;
           default:
             setSignInErrors({
               password: {
-                message:
-                  "Could not sign in. Make sure you entered correct email and password",
-              },
+                message: 'Could not sign in. Make sure you entered correct email and password'
+              }
             });
             break;
         }

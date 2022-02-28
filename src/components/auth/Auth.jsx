@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Route, Routes, Link as RouterLink, Outlet } from 'react-router-dom';
+import { Route, Routes, Link as RouterLink } from 'react-router-dom';
 
 import OAuth from '../oAuth';
 import SignUp from '../signUp';
@@ -82,8 +82,6 @@ const Auth = () => {
         <Route path="signup" element={<SignUp />} />
         <Route path="signin" element={<SignIn />} />
       </Routes>
-      {/* This renders signup or login model based on route */}
-      {/* <Outlet /> */}
     </Box>
   );
 };

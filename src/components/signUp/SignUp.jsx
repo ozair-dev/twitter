@@ -1,80 +1,63 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 
-import UserContext from '../../providers/UserContext'
+import UserContext from '../../providers/UserContext';
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile
-} from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
-const auth = getAuth()
+const auth = getAuth();
 
-import {
-  getStorage,
-  ref as fRef,
-  uploadBytesResumable,
-  getDownloadURL
-} from "firebase/storage";
+import { getStorage, ref as fRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 const storage = getStorage();
 
+import AuthModal from '../authModal';
 
-import AuthModal from "../authModal";
-
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Input from "@mui/material/Input";
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm } from 'react-hook-form';
 
-import { object, string, ref } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, ref } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const signUpSchema = object({
-  name: string().required("Name is required"),
+  name: string().required('Name is required'),
   email: string()
     .lowercase()
-    .email("Must be a valid email address")
-    .required("Email address is required"),
-  password: string()
-    .min(6, "Must be atleast 6 characters long")
-    .required("Password is required"),
+    .email('Must be a valid email address')
+    .required('Email address is required'),
+  password: string().min(6, 'Must be atleast 6 characters long').required('Password is required'),
   confirmPassword: string()
-    .oneOf([ref("password"), null], "Passwords must match")
-    .required("Please re-enter the password"),
+    .oneOf([ref('password'), null], 'Passwords must match')
+    .required('Please re-enter the password')
 }).required();
 
 const Signup = () => {
-  const {user, setUser} = useContext(UserContext)
-  const [signUpErrors, setSignUpErrors] = useState({})
+  const { setUser } = useContext(UserContext);
+  const [signUpErrors, setSignUpErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("")
+  const [imageUrl, setImageUrl] = useState('');
 
   const {
     control,
     handleSubmit,
-    reset,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
     resolver: yupResolver(signUpSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-      name: "",
-    },
+      email: '',
+      password: '',
+      confirmPassword: '',
+      name: ''
+    }
   });
 
   return (
-    <AuthModal
-    >
+    <AuthModal>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h6" mt={3}>
           Create your account
@@ -82,17 +65,18 @@ const Signup = () => {
 
         <Box
           sx={{
-            mx: "auto",
+            mx: 'auto',
             my: 2,
             width: 200,
             height: 200,
-            borderRadius: "50%",
+            borderRadius: '50%',
             border: 1,
-            borderColor: "primary.main",
-            position: "relative"
-          }}
-        >
-          {!!imageUrl && <img src={imageUrl} style={{width: "100%", height: "100%", borderRadius: "50%"}} />}
+            borderColor: 'primary.main',
+            position: 'relative'
+          }}>
+          {!!imageUrl && (
+            <img src={imageUrl} style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+          )}
 
           <label htmlFor="image-input">
             <input
@@ -100,7 +84,7 @@ const Signup = () => {
               id="image-input"
               onChange={handleImageSelect}
               type="file"
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
             />
             <LoadingButton
               component="span"
@@ -110,13 +94,12 @@ const Signup = () => {
               sx={{
                 p: 1,
                 minWidth: 0,
-                position: "absolute",
+                position: 'absolute',
                 bottom: 0,
                 right: 0,
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <CameraAltIcon sx={{ color: "gray[50]" }} />
+                transform: 'translate(-50%, -50%)'
+              }}>
+              <CameraAltIcon sx={{ color: 'gray[50]' }} />
             </LoadingButton>
           </label>
         </Box>
@@ -199,47 +182,43 @@ const Signup = () => {
     </AuthModal>
   );
 
-  function onSubmit({email, password, name}) {
-    setLoading(true)
-    setSignUpErrors({})
+  function onSubmit({ email, password, name }) {
+    setLoading(true);
+    setSignUpErrors({});
     createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredential=>{
-      const {user} = userCredential
-      updateProfile(user, {
-        displayName: name,
-        photoURL: imageUrl
-      }).then(()=>{
-        const {displayName: name, photoURL, email} = auth.currentUser;
-        setUser({name, email, photoURL})
-        setLoading(false)
-        navigate("/")
+      .then((userCredential) => {
+        const { user } = userCredential;
+        updateProfile(user, {
+          displayName: name,
+          photoURL: imageUrl
+        }).then(() => {
+          setUser(auth.currentUser);
+        });
       })
-    })
-    .catch(err=>{
-      setLoading(false)
-
-      switch(err.code){
-        case "auth/invalid-email":
-          setSignUpErrors({email: {message: "Invalid email address"}});
-          break;
-        case "auth/email-already-in-use":
-          setSignUpErrors({email: {message: "Email address is already in use"}})
-          break;
-      }
-
-    })
+      .catch((err) => {
+        setLoading(false);
+        switch (err.code) {
+          case 'auth/invalid-email':
+            setSignUpErrors({ email: { message: 'Invalid email address' } });
+            break;
+          case 'auth/email-already-in-use':
+            setSignUpErrors({ email: { message: 'Email address is already in use' } });
+            break;
+        }
+      });
   }
 
   function handleImageSelect(e) {
     const file = e.target.files[0];
 
-    if (file && file.type.includes("image")) {
-      setImageUrl(false);
+    if (file && file.type.includes('image')) {
+      setImageUrl('');
       setLoading(true);
-      const storageRef = fRef(storage, "images/" + file.name);
+      const storageRef = fRef(storage, 'images/' + file.name);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on("state_changed",
+      uploadTask.on(
+        'state_changed',
 
         // getting events like, progress
         (snapshot) => {
@@ -247,17 +226,18 @@ const Signup = () => {
         },
 
         // handeling errors
-        ()=>{
-          setLoading(false)
+        () => {
+          setLoading(false);
         },
 
         // success function
-        ()=>{
+        () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImageUrl(downloadURL)
+            setImageUrl(downloadURL);
           });
-          setLoading(false)
-        });
+          setLoading(false);
+        }
+      );
     }
   }
 };

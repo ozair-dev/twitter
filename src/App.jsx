@@ -4,7 +4,7 @@
 //    Context Api
 //    Plus more along the way (hopefully)
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 
 import UserContext from './providers/UserContext';
@@ -13,7 +13,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from './utils/routes/PrivateRoute';
 import PublicRoute from './utils/routes/PublicRoute';
 
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { app } from './firebase';
 
 const auth = getAuth();
@@ -21,18 +21,13 @@ const auth = getAuth();
 import Welcome from './components/welcome';
 import Surf from './components/surf';
 
-import SignUp from './components/signUp';
-import SignIn from './components/signIn';
-
 function App() {
   const [user, setUser] = usePersistedUser();
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
-        const { displayName: name, photoURL, email } = user;
-        setUser({ name, email, photoURL });
+        setUser(user);
       } else setUser(null);
     });
   }, []);
@@ -70,6 +65,15 @@ function usePersistedUser() {
   const [user, setUser] = useState(null);
   const firstRenderRef = useRef(true);
 
+  const updateUser = useCallback((user) => {
+    if (user) {
+      const { displayName: name, email, photoURL } = user;
+      setUser({ name, email, photoURL });
+    } else {
+      setUser(null);
+    }
+  });
+
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem('localUser'));
     if (savedUser) setUser(savedUser);
@@ -79,9 +83,14 @@ function usePersistedUser() {
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
     } else {
-      localStorage.setItem('localUser', JSON.stringify(user));
+      if (user) {
+        localStorage.setItem('localUser', JSON.stringify(user));
+      } else {
+        console.log('clearnig');
+        localStorage.removeItem('localUser');
+      }
     }
   }, [user]);
 
-  return [user, setUser];
+  return [user, updateUser];
 }

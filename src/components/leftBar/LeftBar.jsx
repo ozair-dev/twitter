@@ -1,15 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-import NavOptions from '../navOptions';
 
 import NavLink from '../navLink';
+import NavOptions from '../navOptions';
 
 import Box from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import TwitterIcon from '@mui/icons-material/Twitter';
 
+// Icons
 import {
   AiOutlineHome as HomeIconOutlined,
   AiFillHome as HomeIconFilled,
@@ -55,62 +54,30 @@ const Leftbar = () => {
         sx={{
           '& > a': { textDecoration: 'none', color: 'secondary.dark' }
         }}>
+        <NavLink IconOutlined={HomeIconOutlined} IconFilled={HomeIconFilled} value="Home" />
+        <NavLink IconOutlined={HashIconOutlined} IconFilled={HashIconFilled} value="Explore" />
         <NavLink
-          to="home"
-          IconOutlined={HomeIconOutlined}
-          IconFilled={HomeIconFilled}
-          text="Home"
-          active={false}
-        />
-        <NavLink
-          to="explore"
-          IconOutlined={HashIconOutlined}
-          IconFilled={HashIconFilled}
-          text="Explore"
-          active={false}
-        />
-        <NavLink
-          to="communities"
           IconOutlined={PeopleIconOutlined}
           IconFilled={PeopleIconFilled}
-          text="Communitites"
-          active={false}
+          value="Communitites"
         />
         <NavLink
-          to="notifications"
           IconOutlined={NotificationIconOutlined}
           IconFilled={NotificationIconFilled}
-          text="Notifications"
-          active={false}
+          value="Notifications"
         />
         <NavLink
-          to="messages"
           IconOutlined={MessageIconOutlined}
           IconFilled={MessageIconFilled}
-          text="Messages"
-          active={false}
+          value="Messages"
         />
         <NavLink
-          to="bookmarks"
           IconOutlined={BookmarkIconOutlined}
           IconFilled={BookmarkIconFilled}
-          text="Bookmarks"
-          active={false}
+          value="Bookmarks"
         />
-        <NavLink
-          to="profile"
-          IconOutlined={UserIconOutlined}
-          IconFilled={UserIconFilled}
-          text="Profile"
-          active={false}
-        />
-        <NavLink
-          to="more"
-          IconOutlined={MoreIconOutlined}
-          IconFilled={MoreIconFilled}
-          text="More"
-          active={false}
-        />
+        <NavLink IconOutlined={UserIconOutlined} IconFilled={UserIconFilled} value="Profile" />
+        <NavLink IconOutlined={MoreIconOutlined} IconFilled={MoreIconFilled} value="More" />
 
         <Button
           variant="contained"
