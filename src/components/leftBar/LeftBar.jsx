@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { useLocation, Link } from 'react-router-dom';
 
 import NavLink from '../navLink';
 import NavOptions from '../navOptions';
 
 import Box from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
 
 import TwitterIcon from '@mui/icons-material/Twitter';
 
@@ -37,47 +41,95 @@ import {
 import { GiFeather } from 'react-icons/gi';
 
 const Leftbar = () => {
+  const [active, setActive] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const currentPage = location.pathname.split('/')[2];
+    setActive(currentPage);
+  }, [location]);
+
   return (
     <Box
       component="div"
       sx={{
-        position: 'relative',
-        pl: 5,
-        pr: 2,
-        py: 2,
+        position: 'sticky',
+        top: 0,
+        pl: { xs: 1, sm: 2, md: 5 },
+        pr: { xs: 1, sm: 2 },
+        py: { xs: 1, sm: 2 },
         width: { xs: 'fit-content', md: 1 / 4 },
-        height: '100vh'
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
       }}>
-      <TwitterIcon color="primary" sx={{ fontSize: 40 }} />
       <Box
         component="div"
         sx={{
           '& > a': { textDecoration: 'none', color: 'secondary.dark' }
         }}>
-        <NavLink IconOutlined={HomeIconOutlined} IconFilled={HomeIconFilled} value="Home" />
-        <NavLink IconOutlined={HashIconOutlined} IconFilled={HashIconFilled} value="Explore" />
+        <Link to="home">
+          <IconButton color="primary">
+            <TwitterIcon sx={{ fontSize: 40 }} />
+          </IconButton>
+        </Link>
         <NavLink
-          IconOutlined={PeopleIconOutlined}
-          IconFilled={PeopleIconFilled}
+          active={active}
+          IconOutlined={
+            <Badge color="primary" variant="dot">
+              <HomeIconOutlined />
+            </Badge>
+          }
+          IconFilled={
+            <Badge color="primary" variant="dot">
+              <HomeIconFilled />
+            </Badge>
+          }
+          value="Home"
+        />
+        <NavLink
+          active={active}
+          IconOutlined={<HashIconOutlined />}
+          IconFilled={<HashIconFilled />}
+          value="Explore"
+        />
+        <NavLink
+          active={active}
+          IconOutlined={<PeopleIconOutlined />}
+          IconFilled={<PeopleIconFilled />}
           value="Communitites"
         />
         <NavLink
-          IconOutlined={NotificationIconOutlined}
-          IconFilled={NotificationIconFilled}
+          active={active}
+          IconOutlined={<NotificationIconOutlined />}
+          IconFilled={<NotificationIconFilled />}
           value="Notifications"
         />
         <NavLink
-          IconOutlined={MessageIconOutlined}
-          IconFilled={MessageIconFilled}
+          active={active}
+          IconOutlined={<MessageIconOutlined />}
+          IconFilled={<MessageIconFilled />}
           value="Messages"
         />
         <NavLink
-          IconOutlined={BookmarkIconOutlined}
-          IconFilled={BookmarkIconFilled}
+          active={active}
+          IconOutlined={<BookmarkIconOutlined />}
+          IconFilled={<BookmarkIconFilled />}
           value="Bookmarks"
         />
-        <NavLink IconOutlined={UserIconOutlined} IconFilled={UserIconFilled} value="Profile" />
-        <NavLink IconOutlined={MoreIconOutlined} IconFilled={MoreIconFilled} value="More" />
+        <NavLink
+          active={active}
+          IconOutlined={<UserIconOutlined />}
+          IconFilled={<UserIconFilled />}
+          value="Profile"
+        />
+        <NavLink
+          active={active}
+          IconOutlined={<MoreIconOutlined />}
+          IconFilled={<MoreIconFilled />}
+          value="More"
+        />
 
         <Button
           variant="contained"

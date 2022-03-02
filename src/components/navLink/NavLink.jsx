@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const Navbutton = ({ value, IconOutlined, IconFilled }) => {
-  const location = useLocation();
-  const [active, setActive] = useState(false);
-
-  useEffect(() => {
-    const currentPage = location.pathname.split('/')[2];
-    setActive(currentPage === value.toLowerCase());
-  }, [location]);
-
+const Navbutton = ({ value, IconOutlined, IconFilled, active }) => {
+  const isActive = active === value.toLowerCase();
   return (
     <Link to={value.toLowerCase()}>
       <Box component="div" sx={{ '&:hover span': { backgroundColor: '#dddcdc' } }}>
@@ -29,9 +22,9 @@ const Navbutton = ({ value, IconOutlined, IconFilled }) => {
               fontSize: 'x-large'
             }
           }}>
-          {active ? <IconFilled /> : <IconOutlined />}
+          {isActive ? IconFilled : IconOutlined}
           <Typography
-            fontWeight={active ? 'bold' : 400}
+            fontWeight={isActive ? 'bold' : 400}
             ml={2}
             fontSize={19}
             sx={{ display: { xs: 'none', md: 'initial' } }}>

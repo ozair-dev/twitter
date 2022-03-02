@@ -25,7 +25,9 @@ import { object, string, ref } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const signUpSchema = object({
-  name: string().required('Name is required'),
+  name: string()
+    .required('Name is required')
+    .max(50, "Name's length should not be more than 50 characters"),
   email: string()
     .lowercase()
     .email('Must be a valid email address')

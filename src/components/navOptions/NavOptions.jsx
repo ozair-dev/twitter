@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import { getAuth } from 'firebase/auth';
+
 const auth = getAuth();
 
 import UserContext from '../../providers/UserContext';
@@ -11,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
-import DoneIcon from '@mui/icons-material/Done';
 import CheckIcon from '@mui/icons-material/Check';
 
 import { RiMoreFill } from 'react-icons/ri';
@@ -24,11 +24,26 @@ const Navoptions = () => {
   } = useContext(UserContext);
   return (
     <Box
-      sx={{
-        position: 'absolute',
-        bottom: 10,
-        width: 1
-      }}>
+      sx={[
+        {
+          width: 1,
+          position: 'relative'
+        },
+        showingPopup && {
+          // showing arrow
+          '&:after': {
+            content: '""',
+            width: 20,
+            height: 20,
+            boxShadow: '4px 4px 4px #dddcdc',
+            position: 'absolute',
+            left: '50%',
+            top: 0,
+            transform: 'translate(-50%, calc(-100% - 5px)) rotate(45deg)',
+            background: 'linear-gradient(-45deg, white 50%, transparent 50%)'
+          }
+        }
+      ]}>
       <Box
         onClick={() => setShowingPopup((p) => !p)}
         sx={{
@@ -69,11 +84,11 @@ const Navoptions = () => {
             position: 'absolute',
             top: 0,
             left: 0,
-            borderRadius: 10,
+            borderRadius: 5,
             backgroundColor: 'white',
-            overflow: 'hidden',
-            transform: 'translateY(-100%)',
-            boxShadow: '0 0 10px lightgray'
+            transform: 'translateY(calc(-100% - 14px))',
+            boxShadow: '0 0 10px #dddcdc',
+            overflow: 'initial'
           }}>
           <Box sx={{ display: 'flex', alignItems: 'center', p: 1 }}>
             <Box sx={{ flex: 1, width: 0, display: 'flex', alignItems: 'center' }}>

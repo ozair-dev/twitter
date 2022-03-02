@@ -9,7 +9,7 @@ import './App.css';
 
 import UserContext from './providers/UserContext';
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import PrivateRoute from './utils/routes/PrivateRoute';
 import PublicRoute from './utils/routes/PublicRoute';
 
@@ -23,6 +23,12 @@ import Surf from './components/surf';
 
 function App() {
   const [user, setUser] = usePersistedUser();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -67,8 +73,8 @@ function usePersistedUser() {
 
   const updateUser = useCallback((user) => {
     if (user) {
-      const { displayName: name, email, photoURL } = user;
-      setUser({ name, email, photoURL });
+      const { displayName: name, email, photoURL, uid: id } = user;
+      setUser({ name, email, photoURL, id });
     } else {
       setUser(null);
     }
