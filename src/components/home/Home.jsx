@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { db } from '../../firebase';
-import { collection, orderBy, limit, onSnapshot, query } from 'firebase/firestore';
+import { collection, doc, orderBy, limit, onSnapshot, query } from 'firebase/firestore';
 
 import ComposeTweet from '../composeTweet';
 import Post from '../post';
@@ -38,7 +38,7 @@ const Home = () => {
         position="sticky"
         sx={{
           color: 'common.black',
-          backgroundColor: '#ffffff82',
+          bgcolor: '#ffffff82',
           backdropFilter: 'blur(1px)',
           p: 1.5,
           boxShadow: 'none',
@@ -52,7 +52,9 @@ const Home = () => {
           <BsStars />
         </IconButton>
       </AppBar>
+
       <ComposeTweet />
+
       {posts.map((post) => (
         <Post key={post.id} document={post} />
       ))}

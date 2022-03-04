@@ -53,7 +53,7 @@ const Navoptions = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           borderRadius: 10,
-          '&:hover': { backgroundColor: '#dddcdc' }
+          '&:hover': { bgcolor: '#dddcdc' }
         }}>
         <Box sx={{ flex: 1, width: 0, display: 'flex', alignItems: 'center' }}>
           {photoURL ? (
@@ -85,7 +85,7 @@ const Navoptions = () => {
             top: 0,
             left: 0,
             borderRadius: 5,
-            backgroundColor: 'white',
+            bgcolor: 'white',
             transform: 'translateY(calc(-100% - 14px))',
             boxShadow: '0 0 10px #dddcdc',
             overflow: 'initial'

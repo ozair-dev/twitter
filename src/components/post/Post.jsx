@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 
-import userContext from '../../providers/UserContext';
+import UserContext from '../../providers/UserContext';
 
 import { db } from '../../firebase';
 import { doc, onSnapshot, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -21,7 +21,7 @@ import { FiShare } from 'react-icons/fi';
 import { RiMoreFill } from 'react-icons/ri';
 
 const Post = ({ document }) => {
-  const { user } = useContext(userContext);
+  const { user } = useContext(UserContext);
   const [post, setPost] = useState(document);
   const imagesDivRef = useRef(null);
   const [imgIdx, setImgIdx] = useState(0);
@@ -49,7 +49,6 @@ const Post = ({ document }) => {
   const {
     by: { photoURL, name },
     images,
-    timestamp,
     tweet,
     likes,
     comments
@@ -57,7 +56,6 @@ const Post = ({ document }) => {
 
   return (
     <Box sx={{ display: 'flex', p: 1.5, pb: 0.5, borderBottom: 1, borderColor: 'secondary.light' }}>
-      {/* Showing the user avatar */}
       {photoURL ? (
         <Avatar alt="name" src={photoURL} sx={{ width: 55, height: 55 }} />
       ) : (
@@ -65,7 +63,7 @@ const Post = ({ document }) => {
       )}
 
       <Box sx={{ pl: 1, flex: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography varaint="h6" fontWeight="bold">
             {name}
           </Typography>
@@ -75,22 +73,25 @@ const Post = ({ document }) => {
         </Box>
         <Typography>{tweet}</Typography>
 
+        {/* This box contains images and the buttons to slide the images */}
         <Box sx={{ position: 'relative' }}>
           {!!images.length && (
             <Box
               ref={imagesDivRef}
               sx={{
                 width: 1,
+                minHeight: 60,
                 display: 'grid',
+                borderRadius: 3,
                 gridTemplateColumns: `repeat(${images.length}, 100%)`,
                 overflow: 'hidden',
                 '& button': {
                   color: 'white',
-                  backgroundColor: 'black',
+                  bgcolor: 'common.black',
                   opacity: '0.4'
                 },
                 '& button:hover': {
-                  backgroundColor: 'black'
+                  bgcolor: 'common.black'
                 }
               }}>
               {images.map((src, idx) => (
@@ -104,29 +105,33 @@ const Post = ({ document }) => {
                     justifyContent: 'center',
                     '& img': {
                       maxWidth: 1,
-                      maxHeight: 1,
-                      borderRadius: 3
+                      maxHeight: 1
                     }
                   }}>
                   <img alt="image" src={src} lazy="true" />
                 </Box>
               ))}
 
-              <IconButton
-                onClick={() => handleImageSlide('-')}
-                sx={{ position: 'absolute', top: '50%', left: 0 }}>
-                <AiOutlineLeft />
-              </IconButton>
+              {images.length > 1 && (
+                <>
+                  <IconButton
+                    onClick={() => handleImageSlide('-')}
+                    sx={{ position: 'absolute', top: '50%', left: 0 }}>
+                    <AiOutlineLeft />
+                  </IconButton>
 
-              <IconButton
-                onClick={() => handleImageSlide('+')}
-                sx={{ position: 'absolute', top: '50%', right: 0 }}>
-                <AiOutlineRight />
-              </IconButton>
+                  <IconButton
+                    onClick={() => handleImageSlide('+')}
+                    sx={{ position: 'absolute', top: '50%', right: 0 }}>
+                    <AiOutlineRight />
+                  </IconButton>
+                </>
+              )}
             </Box>
           )}
         </Box>
 
+        {/* post actions such as like, comment and retweet */}
         <Box
           sx={{
             display: 'flex',
@@ -141,7 +146,7 @@ const Post = ({ document }) => {
               color: grey.A700,
               '&:hover': {
                 color: lightBlue.A400,
-                backgroundColor: lightBlue[50]
+                bgolor: lightBlue[50]
               }
             }}>
             {comments}
@@ -152,7 +157,7 @@ const Post = ({ document }) => {
               color: grey.A700,
               '&:hover': {
                 color: green.A400,
-                backgroundColor: green[50]
+                bgolor: green[50]
               }
             }}></Button>
 
@@ -164,7 +169,7 @@ const Post = ({ document }) => {
                 color: grey.A700,
                 '&:hover': {
                   color: pink.A200,
-                  backgroundColor: pink[50]
+                  bgolor: pink[50]
                 }
               },
               liked && {
@@ -177,14 +182,17 @@ const Post = ({ document }) => {
           <Button
             startIcon={<FiShare />}
             sx={{
+              display: { xs: 'none', sm: 'initial' },
               color: grey.A700,
               '&:hover': {
                 color: lightBlue.A400,
-                backgroundColor: lightBlue[50]
+                bgolor: lightBlue[50]
               }
             }}></Button>
         </Box>
-        {showingComments && <Comments post={post} />}
+
+        {/* Nested level is used to know how deep comments are so we can limit how many levels deep users can make comments */}
+        {showingComments && <Comments nestedLevel={1} parentDocPath={`posts/${post.id}`} />}
       </Box>
     </Box>
   );

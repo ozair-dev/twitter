@@ -74,6 +74,7 @@ const Leftbar = () => {
             <TwitterIcon sx={{ fontSize: 40 }} />
           </IconButton>
         </Link>
+
         <NavLink
           active={active}
           IconOutlined={
@@ -88,6 +89,7 @@ const Leftbar = () => {
           }
           value="Home"
         />
+
         <NavLink
           active={active}
           IconOutlined={<HashIconOutlined />}

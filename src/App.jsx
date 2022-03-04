@@ -9,11 +9,13 @@ import './App.css';
 
 import UserContext from './providers/UserContext';
 
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from './utils/routes/PrivateRoute';
 import PublicRoute from './utils/routes/PublicRoute';
 
 import { getAuth } from 'firebase/auth';
+
+// firebase initialzed app must be imported
 import { app } from './firebase';
 
 const auth = getAuth();
@@ -23,12 +25,6 @@ import Surf from './components/surf';
 
 function App() {
   const [user, setUser] = usePersistedUser();
-
-  const location = useLocation();
-
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -67,6 +63,8 @@ function App() {
 
 export default App;
 
+// custom hook to get user credentials stored in local storage
+
 function usePersistedUser() {
   const [user, setUser] = useState(null);
   const firstRenderRef = useRef(true);
@@ -92,7 +90,6 @@ function usePersistedUser() {
       if (user) {
         localStorage.setItem('localUser', JSON.stringify(user));
       } else {
-        console.log('clearnig');
         localStorage.removeItem('localUser');
       }
     }

@@ -217,7 +217,7 @@ const Signup = () => {
       setImageUrl('');
       setLoading(true);
       const storageRef = fRef(storage, 'images/' + file.name);
-
+      console.log(storageRef);
       const uploadTask = uploadBytesResumable(storageRef, file);
       uploadTask.on(
         'state_changed',
@@ -228,8 +228,9 @@ const Signup = () => {
         },
 
         // handeling errors
-        () => {
+        (e) => {
           setLoading(false);
+          console.log(e);
         },
 
         // success function

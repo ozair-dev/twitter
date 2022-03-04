@@ -35,6 +35,7 @@ const Rightbar = () => {
         top: 0,
         overflowY: 'scroll'
       }}>
+      {/* dummy search bar */}
       <TextField
         fullWidth
         placeholder="Search Twitter"
@@ -47,7 +48,7 @@ const Rightbar = () => {
           )
         }}
         sx={{
-          '& .MuiOutlinedInput-root': { borderRadius: 40, backgroundColor: '#d3d3d342' },
+          '& .MuiOutlinedInput-root': { borderRadius: 40, bgcolor: '#d3d3d342' },
           '& input': { p: 1 }
         }}
       />
@@ -66,7 +67,8 @@ const Rightbar = () => {
           <Box
             key={idx}
             sx={{
-              p: 2,
+              px: 2,
+              py: 1.5,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',

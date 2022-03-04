@@ -1,3 +1,5 @@
+// Custom madal made on the top of material UI's model to show login and signup page
+
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';

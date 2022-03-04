@@ -5,6 +5,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Leftbar from '../leftBar';
 import RightBar from '../rightBar';
 import Home from '../home';
+import NotFound from '../notFound';
 
 import Box from '@mui/material/Box';
 
@@ -14,6 +15,8 @@ const Surf = () => {
 
   useEffect(() => {
     const currentPage = location.pathname.split('/')[2];
+
+    // navigate to home path as default path
     if (!currentPage) {
       navigate('home');
     }
@@ -31,7 +34,9 @@ const Surf = () => {
           borderColor: 'secondary.light'
         }}>
         <Routes>
-          <Route default path="home" element={<Home />} />
+          <Route index element={<div></div>} />
+          <Route path="home" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>
       <RightBar />

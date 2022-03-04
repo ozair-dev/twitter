@@ -1,48 +1,108 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 
-import userContext from '../../providers/UserContext';
+import UserContext from '../../providers/UserContext';
 
 import { db } from '../../firebase';
-import { addDoc, collection, onSnapshot, query } from 'firebase/firestore';
+import {
+  doc,
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  limit,
+  orderBy,
+  updateDoc,
+  increment
+} from 'firebase/firestore';
+
+import Comment from '../comment';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 
 import { AiOutlineSend } from 'react-icons/ai';
 
-const Comments = ({ post }) => {
-  const { user } = useContext(userContext);
+const Comments = ({ nestedLevel, parentDocPath }) => {
+  const { user } = useContext(UserContext);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [commentsLimit, setCommentsLimit] = useState(5);
 
-  useEffect(() => {}, []);
+  const commentsCollectionRef = useRef();
+  const docRef = useRef();
+
+  useEffect(() => {
+    docRef.current = doc(db, parentDocPath);
+    commentsCollectionRef.current = collection(db, parentDocPath, 'comments');
+
+    const unsub = onSnapshot(
+      query(commentsCollectionRef.current, orderBy('timestamp', 'desc'), limit(commentsLimit)),
+      (snapshot) => {
+        const comments = [];
+        snapshot.forEach((doc) => {
+          comments.push(doc);
+        });
+        setComments(comments);
+      }
+    );
+    return unsub;
+  }, [commentsLimit]);
+
+  const commentElems = comments.map((doc) => (
+    <Comment
+      key={doc.id}
+      document={doc}
+      parentCollectionPath={`${parentDocPath}/comments`}
+      nestedLevel={nestedLevel}
+    />
+  ));
 
   return (
     <Box sx={{ width: 1, py: 1 }}>
-      <Box sx={{ display: 'flex' }}>
+      <Box component="form" onSubmit={addComment} sx={{ display: 'flex', ml: 1 }}>
         <TextField
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           fullWidth
           sx={{ '& .MuiOutlinedInput-root': { borderRadius: 20 }, '& input': { py: 1 } }}
         />
-        <IconButton onClick={addComment} color="primary" variant="contained">
+        <IconButton type="sumbit" color="primary" variant="contained">
           <AiOutlineSend />
         </IconButton>
       </Box>
+      {commentElems}
+
+      {comments.length >= 5 && (
+        <Button
+          size="small"
+          onClick={() => setCommentsLimit((p) => p + 5)}
+          sx={{ display: 'block', mx: 'auto' }}>
+          Show more
+        </Button>
+      )}
     </Box>
   );
 
-  async function addComment() {
-    await addDoc(collection(db, 'posts', post.id, 'comments'), {
-      by: user,
-      comments: 0,
-      likes: [],
-      comment: comment
-    });
-    console.log('comment added');
-    setComment('');
+  async function addComment(e) {
+    e.preventDefault();
+    if (comment.trim() && nestedLevel <= 4) {
+      await addDoc(commentsCollectionRef.current, {
+        by: user,
+        comments: 0,
+        likes: [],
+        value: comment,
+        timestamp: serverTimestamp()
+      });
+
+      setComment('');
+
+      await updateDoc(docRef.current, {
+        comments: increment(1)
+      });
+    }
   }
 };
 

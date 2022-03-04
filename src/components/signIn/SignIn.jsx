@@ -1,6 +1,4 @@
-import React, { useState, useContext } from 'react';
-
-import UserContext from '../../providers/UserContext';
+import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +17,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+// form validation
 const loginSchema = object({
   email: string().lowercase().email('Must be a valid email address').required('Email is required'),
   password: string().required('Password is required')

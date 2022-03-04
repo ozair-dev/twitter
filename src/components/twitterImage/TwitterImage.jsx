@@ -24,7 +24,14 @@ const TwitterImage = () => {
         src="https://abs.twimg.com/sticky/illustrations/lohp_en_1302x955.png"
       />
       <TwitterIcon
-        sx={{ p: 10, width: '100%', maxHeight: 1, position: 'absolute', color: 'common.white' }}
+        sx={{
+          p: '10%',
+          width: '100%',
+          height: 'auto',
+          maxHeight: '100%',
+          position: 'absolute',
+          color: 'common.white'
+        }}
       />
     </Box>
   );

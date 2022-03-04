@@ -13,7 +13,10 @@ const Welcome = () => {
         display: 'flex',
         flexDirection: { xs: 'column', sm: 'row-reverse' }
       }}>
+      {/* Auth options */}
       <Auth />
+
+      {/* Twitter images to be shown on welcome page */}
       <TwitterImage />
     </Box>
   );

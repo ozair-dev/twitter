@@ -8,7 +8,7 @@ const Navbutton = ({ value, IconOutlined, IconFilled, active }) => {
   const isActive = active === value.toLowerCase();
   return (
     <Link to={value.toLowerCase()}>
-      <Box component="div" sx={{ '&:hover span': { backgroundColor: '#dddcdc' } }}>
+      <Box component="div" sx={{ '&:hover span': { bgcolor: '#dddcdc' } }}>
         <Box
           component="span"
           sx={{

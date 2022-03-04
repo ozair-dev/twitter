@@ -116,7 +116,7 @@ const ComposeTweet = () => {
               p: 0.5,
               my: 0.5,
               borderRadius: 2,
-              backgroundColor: 'secondary.light',
+              bgcolor: 'secondary.light',
               width: 1,
               display: 'flex',
               alignItems: 'center',
@@ -160,8 +160,8 @@ const ComposeTweet = () => {
     if (tweet || images.length) {
       const imagesSrcs = images.map((img) => img.url);
       setLoading(true);
-      const postRef = await addDoc(collection(db, 'posts'), {
-        tweet: tweet || undefined,
+      await addDoc(collection(db, 'posts'), {
+        tweet: tweet,
         images: imagesSrcs,
         timestamp: serverTimestamp(),
         by: user,
