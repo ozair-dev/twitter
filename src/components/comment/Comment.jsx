@@ -29,7 +29,7 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
   const {
     value,
     likes,
-    comments,
+    comments: commentsCount,
     by: { photoURL, name }
   } = comment.data();
 
@@ -69,13 +69,16 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
             borderColor: 'secondary.light'
           }
         }}>
+
         <Box sx={{ display: 'flex', alignItems: 'center', p: 1, bgcolor: '#d3d3d342' }}>
           {photoURL ? <Avatar alt={name} src={photoURL} /> : <Avatar>{name}</Avatar>}
           <Typography fontWeight="medium" sx={{ ml: 1 }}>
             {name}
           </Typography>
         </Box>
+
         <Typography sx={{ p: 1 }}>{value}</Typography>
+
         <Box
           sx={{
             display: 'flex',
@@ -94,8 +97,9 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
                 bgcolor: lightBlue[50]
               }
             }}>
-            {comments}
+            {commentsCount}
           </Button>
+
           <Button
             startIcon={<AiOutlineRetweet />}
             sx={{

@@ -4,7 +4,7 @@
 //    Context Api
 //    Plus more along the way (hopefully)
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 import UserContext from './providers/UserContext';
@@ -28,9 +28,7 @@ function App() {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else setUser(null);
+      setUser(user);
     });
   }, []);
 
@@ -67,14 +65,15 @@ export default App;
 
 function usePersistedUser() {
   const [user, setUser] = useState(null);
-  const firstRenderRef = useRef(true);
 
   const updateUser = useCallback((user) => {
     if (user) {
       const { displayName: name, email, photoURL, uid: id } = user;
       setUser({ name, email, photoURL, id });
+      localStorage.setItem('localUser', JSON.stringify({ name, email, photoURL, id }));
     } else {
       setUser(null);
+      localStorage.removeItem('localUser');
     }
   });
 
@@ -82,18 +81,6 @@ function usePersistedUser() {
     const savedUser = JSON.parse(localStorage.getItem('localUser'));
     if (savedUser) setUser(savedUser);
   }, []);
-
-  useEffect(() => {
-    if (firstRenderRef.current) {
-      firstRenderRef.current = false;
-    } else {
-      if (user) {
-        localStorage.setItem('localUser', JSON.stringify(user));
-      } else {
-        localStorage.removeItem('localUser');
-      }
-    }
-  }, [user]);
 
   return [user, updateUser];
 }

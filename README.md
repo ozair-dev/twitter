@@ -5,6 +5,9 @@
 
 See [demo](https://ozair-dev.github.io/twitter) here
 
+![Twitter](/assets/images/sample1.png "Twitter")
+![Twitter](/assets/images/sample2.png "Twitter")
+
 
 ## Getting started
 

@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const Navbutton = ({ value, IconOutlined, IconFilled, active }) => {
-  const isActive = active === value.toLowerCase();
+const Navbutton = ({ value, IconOutlined, IconFilled, activePage }) => {
+  const isActive = activePage === value.toLowerCase();
   return (
     <Link to={value.toLowerCase()}>
       <Box component="div" sx={{ '&:hover span': { bgcolor: '#dddcdc' } }}>

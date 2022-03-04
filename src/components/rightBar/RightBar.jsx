@@ -12,6 +12,8 @@ import { IoSettingsOutline } from 'react-icons/io5';
 
 import { RiMoreFill } from 'react-icons/ri';
 
+
+// Dummy trends data
 const trends = [
   { name: 'Digital assets & cryptocurrency · Trending', tag: '#Saitam', tweets: '42.4K Tweets' },
   { name: 'Politics · Trending', tag: '#istandwithrussia', tweets: '34.1K Tweets' },
@@ -35,6 +37,7 @@ const Rightbar = () => {
         top: 0,
         overflowY: 'scroll'
       }}>
+
       {/* dummy search bar */}
       <TextField
         fullWidth

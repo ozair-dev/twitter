@@ -51,11 +51,12 @@ const Post = ({ document }) => {
     images,
     tweet,
     likes,
-    comments
+    comments: commentsCount
   } = post.data();
 
   return (
     <Box sx={{ display: 'flex', p: 1.5, pb: 0.5, borderBottom: 1, borderColor: 'secondary.light' }}>
+
       {photoURL ? (
         <Avatar alt="name" src={photoURL} sx={{ width: 55, height: 55 }} />
       ) : (
@@ -63,6 +64,7 @@ const Post = ({ document }) => {
       )}
 
       <Box sx={{ pl: 1, flex: 1 }}>
+
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography varaint="h6" fontWeight="bold">
             {name}
@@ -71,18 +73,17 @@ const Post = ({ document }) => {
             <RiMoreFill />
           </IconButton>
         </Box>
-        <Typography>{tweet}</Typography>
+        <Typography whiteSpace={"pre-line"}>{tweet}</Typography>
 
         {/* This box contains images and the buttons to slide the images */}
-        <Box sx={{ position: 'relative' }}>
-          {!!images.length && (
+        {!!images.length && (
+          <Box sx={{ position: 'relative', mt: 1 }}>
             <Box
               ref={imagesDivRef}
               sx={{
                 width: 1,
                 minHeight: 60,
                 display: 'grid',
-                borderRadius: 3,
                 gridTemplateColumns: `repeat(${images.length}, 100%)`,
                 overflow: 'hidden',
                 '& button': {
@@ -105,7 +106,8 @@ const Post = ({ document }) => {
                     justifyContent: 'center',
                     '& img': {
                       maxWidth: 1,
-                      maxHeight: 1
+                      maxHeight: 1,
+                      borderRadius: 3,
                     }
                   }}>
                   <img alt="image" src={src} lazy="true" />
@@ -127,11 +129,11 @@ const Post = ({ document }) => {
                   </IconButton>
                 </>
               )}
+              </Box>
             </Box>
           )}
-        </Box>
 
-        {/* post actions such as like, comment and retweet */}
+        {/* post action buttons such as like, comment and retweet */}
         <Box
           sx={{
             display: 'flex',
@@ -139,6 +141,7 @@ const Post = ({ document }) => {
             pt: 1,
             '& .MuiButton-root': { borderRadius: 5 }
           }}>
+
           <Button
             onClick={() => setShowingComments((p) => !p)}
             startIcon={<BiMessageRounded />}
@@ -149,8 +152,9 @@ const Post = ({ document }) => {
                 bgolor: lightBlue[50]
               }
             }}>
-            {comments}
+            {commentsCount}
           </Button>
+
           <Button
             startIcon={<AiOutlineRetweet />}
             sx={{
@@ -189,6 +193,7 @@ const Post = ({ document }) => {
                 bgolor: lightBlue[50]
               }
             }}></Button>
+
         </Box>
 
         {/* Nested level is used to know how deep comments are so we can limit how many levels deep users can make comments */}

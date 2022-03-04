@@ -14,6 +14,7 @@ const Surf = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
     const currentPage = location.pathname.split('/')[2];
 
     // navigate to home path as default path
@@ -25,6 +26,7 @@ const Surf = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <Leftbar />
+
       <Box
         sx={{
           flex: 3,
@@ -34,11 +36,12 @@ const Surf = () => {
           borderColor: 'secondary.light'
         }}>
         <Routes>
-          <Route index element={<div></div>} />
+          <Route index element={<div />} />
           <Route path="home" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>
+
       <RightBar />
     </Box>
   );

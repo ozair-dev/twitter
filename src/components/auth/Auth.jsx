@@ -27,6 +27,7 @@ const Auth = () => {
           width: 300
         }
       }}>
+
       <TwitterIcon sx={{ fontSize: '3rem' }} color="primary" />
 
       <Box
@@ -52,6 +53,7 @@ const Auth = () => {
       {/* Auth Methods */}
 
       <Box sx={{ width: 'min-content' }}>
+
         <OAuth />
 
         <Divider textAlign="center" sx={{ my: 1, fontWeight: 'bold' }}>
@@ -76,12 +78,14 @@ const Auth = () => {
         <RouterLink to="signin" style={{ textDecoration: 'none' }}>
           <Button variant="outlined">Sign in</Button>
         </RouterLink>
+
       </Box>
 
       <Routes>
         <Route path="signup" element={<SignUp />} />
         <Route path="signin" element={<SignIn />} />
       </Routes>
+
     </Box>
   );
 };

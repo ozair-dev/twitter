@@ -41,12 +41,12 @@ import {
 import { GiFeather } from 'react-icons/gi';
 
 const Leftbar = () => {
-  const [active, setActive] = useState(false);
+  const [activePage, setActivePage] = useState("");
   const location = useLocation();
 
   useEffect(() => {
     const currentPage = location.pathname.split('/')[2];
-    setActive(currentPage);
+    setActivePage(currentPage);
   }, [location]);
 
   return (
@@ -62,13 +62,16 @@ const Leftbar = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        zIndex: 1
       }}>
+
       <Box
         component="div"
         sx={{
           '& > a': { textDecoration: 'none', color: 'secondary.dark' }
         }}>
+
         <Link to="home">
           <IconButton color="primary">
             <TwitterIcon sx={{ fontSize: 40 }} />
@@ -76,7 +79,7 @@ const Leftbar = () => {
         </Link>
 
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={
             <Badge color="primary" variant="dot">
               <HomeIconOutlined />
@@ -91,43 +94,43 @@ const Leftbar = () => {
         />
 
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<HashIconOutlined />}
           IconFilled={<HashIconFilled />}
           value="Explore"
         />
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<PeopleIconOutlined />}
           IconFilled={<PeopleIconFilled />}
           value="Communitites"
         />
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<NotificationIconOutlined />}
           IconFilled={<NotificationIconFilled />}
           value="Notifications"
         />
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<MessageIconOutlined />}
           IconFilled={<MessageIconFilled />}
           value="Messages"
         />
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<BookmarkIconOutlined />}
           IconFilled={<BookmarkIconFilled />}
           value="Bookmarks"
         />
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<UserIconOutlined />}
           IconFilled={<UserIconFilled />}
           value="Profile"
         />
         <NavLink
-          active={active}
+          activePage={activePage}
           IconOutlined={<MoreIconOutlined />}
           IconFilled={<MoreIconFilled />}
           value="More"

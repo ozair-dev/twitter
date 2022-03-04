@@ -62,6 +62,8 @@ const Comments = ({ nestedLevel, parentDocPath }) => {
 
   return (
     <Box sx={{ width: 1, py: 1 }}>
+
+      {/* form to let user post a comment */}
       <Box component="form" onSubmit={addComment} sx={{ display: 'flex', ml: 1 }}>
         <TextField
           value={comment}
@@ -73,6 +75,7 @@ const Comments = ({ nestedLevel, parentDocPath }) => {
           <AiOutlineSend />
         </IconButton>
       </Box>
+
       {commentElems}
 
       {comments.length >= 5 && (
@@ -88,6 +91,8 @@ const Comments = ({ nestedLevel, parentDocPath }) => {
 
   async function addComment(e) {
     e.preventDefault();
+
+    // user can make comments only 4 levels deeep
     if (comment.trim() && nestedLevel <= 4) {
       await addDoc(commentsCollectionRef.current, {
         by: user,
