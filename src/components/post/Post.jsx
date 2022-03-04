@@ -56,7 +56,6 @@ const Post = ({ document }) => {
 
   return (
     <Box sx={{ display: 'flex', p: 1.5, pb: 0.5, borderBottom: 1, borderColor: 'secondary.light' }}>
-
       {photoURL ? (
         <Avatar alt="name" src={photoURL} sx={{ width: 55, height: 55 }} />
       ) : (
@@ -64,7 +63,6 @@ const Post = ({ document }) => {
       )}
 
       <Box sx={{ pl: 1, flex: 1 }}>
-
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography varaint="h6" fontWeight="bold">
             {name}
@@ -73,7 +71,7 @@ const Post = ({ document }) => {
             <RiMoreFill />
           </IconButton>
         </Box>
-        <Typography whiteSpace={"pre-line"}>{tweet}</Typography>
+        <Typography whiteSpace={'pre-line'}>{tweet}</Typography>
 
         {/* This box contains images and the buttons to slide the images */}
         {!!images.length && (
@@ -107,7 +105,7 @@ const Post = ({ document }) => {
                     '& img': {
                       maxWidth: 1,
                       maxHeight: 1,
-                      borderRadius: 3,
+                      borderRadius: 3
                     }
                   }}>
                   <img alt="image" src={src} lazy="true" />
@@ -129,9 +127,9 @@ const Post = ({ document }) => {
                   </IconButton>
                 </>
               )}
-              </Box>
             </Box>
-          )}
+          </Box>
+        )}
 
         {/* post action buttons such as like, comment and retweet */}
         <Box
@@ -141,7 +139,6 @@ const Post = ({ document }) => {
             pt: 1,
             '& .MuiButton-root': { borderRadius: 5 }
           }}>
-
           <Button
             onClick={() => setShowingComments((p) => !p)}
             startIcon={<BiMessageRounded />}
@@ -193,11 +190,10 @@ const Post = ({ document }) => {
                 bgolor: lightBlue[50]
               }
             }}></Button>
-
         </Box>
 
         {/* Nested level is used to know how deep comments are so we can limit how many levels deep users can make comments */}
-        {showingComments && <Comments nestedLevel={1} parentDocPath={`posts/${post.id}`} />}
+        {showingComments && <Comments nestedLevel={1} parentDoc={post} />}
       </Box>
     </Box>
   );

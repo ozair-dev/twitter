@@ -25,7 +25,7 @@ import Button from '@mui/material/Button';
 
 import { AiOutlineSend } from 'react-icons/ai';
 
-const Comments = ({ nestedLevel, parentDocPath }) => {
+const Comments = ({ nestedLevel, parentDoc }) => {
   const { user } = useContext(UserContext);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
@@ -35,8 +35,8 @@ const Comments = ({ nestedLevel, parentDocPath }) => {
   const docRef = useRef();
 
   useEffect(() => {
-    docRef.current = doc(db, parentDocPath);
-    commentsCollectionRef.current = collection(db, parentDocPath, 'comments');
+    docRef.current = parentDoc;
+    commentsCollectionRef.current = collection(parentDoc.ref, 'comments');
 
     const unsub = onSnapshot(
       query(commentsCollectionRef.current, orderBy('timestamp', 'desc'), limit(commentsLimit)),
@@ -52,17 +52,11 @@ const Comments = ({ nestedLevel, parentDocPath }) => {
   }, [commentsLimit]);
 
   const commentElems = comments.map((doc) => (
-    <Comment
-      key={doc.id}
-      document={doc}
-      parentCollectionPath={`${parentDocPath}/comments`}
-      nestedLevel={nestedLevel}
-    />
+    <Comment key={doc.id} document={doc} nestedLevel={nestedLevel} />
   ));
 
   return (
     <Box sx={{ width: 1, py: 1 }}>
-
       {/* form to let user post a comment */}
       <Box component="form" onSubmit={addComment} sx={{ display: 'flex', ml: 1 }}>
         <TextField
@@ -104,7 +98,7 @@ const Comments = ({ nestedLevel, parentDocPath }) => {
 
       setComment('');
 
-      await updateDoc(docRef.current, {
+      await updateDoc(docRef.current.ref, {
         comments: increment(1)
       });
     }

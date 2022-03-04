@@ -34,9 +34,8 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
   } = comment.data();
 
   useEffect(() => {
-    docRef.current = doc(db, parentCollectionPath, comment.id);
-
-    const unsub = onSnapshot(docRef.current, (doc) => {
+    docRef.current = document;
+    const unsub = onSnapshot(docRef.current.ref, (doc) => {
       setComment(doc);
     });
     return unsub;
@@ -69,7 +68,6 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
             borderColor: 'secondary.light'
           }
         }}>
-
         <Box sx={{ display: 'flex', alignItems: 'center', p: 1, bgcolor: '#d3d3d342' }}>
           {photoURL ? <Avatar alt={name} src={photoURL} /> : <Avatar>{name}</Avatar>}
           <Typography fontWeight="medium" sx={{ ml: 1 }}>
@@ -136,12 +134,7 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
               }
             }}></Button>
         </Box>
-        {showingComments && (
-          <Comments
-            parentDocPath={`${parentCollectionPath}/${comment.id}`}
-            nestedLevel={nestedLevel + 1}
-          />
-        )}
+        {showingComments && <Comments parentDoc={docRef.current} nestedLevel={nestedLevel + 1} />}
       </Box>
     </Box>
   );
@@ -149,12 +142,12 @@ const Comment = ({ document, nestedLevel, parentCollectionPath }) => {
   async function handleLike() {
     if (liked) {
       setLiked(false);
-      await updateDoc(docRef.current, {
+      await updateDoc(docRef.current.ref, {
         likes: arrayRemove(user.id)
       });
     } else {
       setLiked(true);
-      await updateDoc(docRef.current, {
+      await updateDoc(docRef.current.ref, {
         likes: arrayUnion(user.id)
       });
     }
