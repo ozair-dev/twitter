@@ -19,12 +19,8 @@ const Home = () => {
   const [postsLimit, setPostsLimit] = useState(20);
 
   useEffect(async () => {
-    console.log(postsLimit);
-
     // querying posts from db
     const q = query(collection(db, 'posts'), orderBy('timestamp', 'desc'), limit(postsLimit));
-
-    console.log('getting posts');
 
     const unsub = onSnapshot(q, (postsSnapshot) => {
       const latest = [];
