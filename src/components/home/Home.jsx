@@ -19,9 +19,12 @@ const Home = () => {
   const [postsLimit, setPostsLimit] = useState(20);
 
   useEffect(async () => {
+    console.log(postsLimit);
 
     // querying posts from db
     const q = query(collection(db, 'posts'), orderBy('timestamp', 'desc'), limit(postsLimit));
+
+    console.log('getting posts');
 
     const unsub = onSnapshot(q, (postsSnapshot) => {
       const latest = [];
@@ -36,7 +39,6 @@ const Home = () => {
 
   return (
     <Box>
-
       <AppBar
         position="sticky"
         sx={{
@@ -54,7 +56,6 @@ const Home = () => {
         <IconButton size="medium" sx={{ width: 'fit-content' }}>
           <BsStars />
         </IconButton>
-
       </AppBar>
 
       <ComposeTweet />
@@ -63,8 +64,7 @@ const Home = () => {
         <Post key={post.id} document={post} />
       ))}
 
-
-      {!!posts.length && (
+      {!(posts.length < postsLimit) && (
         <Button onClick={() => setPostsLimit((p) => p + 20)} sx={{ display: 'block', mx: 'auto' }}>
           Show more
         </Button>
