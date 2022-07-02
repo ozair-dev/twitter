@@ -1,13 +1,34 @@
-# twitter
-
 ### Twitter clone made in React using Material UI and Firebase
 
 
-See [demo](https://ozair-dev.github.io/twitter) here
+See [demo here](https://ozair-dev.github.io/twitter)
 
+## Technologies Used
+  - React
+  - React-redux
+  - Material-UI
+  - React-hook-form
+  - React-router
+---
+
+## Features
+  - Twitter-like UI
+  - Login/signup with firebase
+  - Google Login
+  - User can make posts
+  - Multiple level (nested) comments
+---
+
+## Previews
+
+### Welcome Page
 ![Twitter](/assets/images/sample1.png "Twitter")
+
+### Posts
 ![Twitter](/assets/images/sample2.png "Twitter")
 
+### Multiple level (Nested) comments
+![](assets/images/sample3.png)
 
 ## Getting started
 
